@@ -37,7 +37,7 @@ public class CM_Client extends CM_Client_GUI implements ActionListener
 			textField.addKeyListener(new Sender(s, nickName));
 			canvas.setBackground(Color.WHITE);
 			panel_Canvas.add(canvas, BorderLayout.CENTER);
-			canvas.addMouseMotionListener(ch); canvas.addMouseMotionListener(new Sender(s, nickName));
+			 canvas.addMouseMotionListener(new Sender(s, nickName)); canvas.addMouseMotionListener(ch);
 			btn_Color1.addActionListener(new Sender(s, nickName)); btn_Color1.addActionListener(ch);
 			btn_Color2.addActionListener(new Sender(s, nickName)); btn_Color2.addActionListener(ch);
 			btn_Color3.addActionListener(new Sender(s, nickName)); btn_Color3.addActionListener(ch);
@@ -87,53 +87,53 @@ public class CM_Client extends CM_Client_GUI implements ActionListener
 		public void actionPerformed(ActionEvent e){
 			if(e.getSource() == btn_Ready){ // '준비' 버튼
 				try{
-					dos.writeUTF("//Chat " + "[ " + nickName + " 님 준비 완료 ! ]");
+					dos.writeUTF(CM_ENUM.CHAT + "[ " + nickName + " 님 준비 완료 ! ]");
 					dos.flush();
-					dos.writeUTF("//Ready");
+					dos.writeUTF(CM_ENUM.READY);
 					dos.flush();
 					btn_Ready.setEnabled(false);
 				}catch(IOException io){}
 			}else if(e.getSource() == btn_Color1 && auth == true){ // 색상 설정 버튼
 				try{
-					dos.writeUTF("//Color" + "Red");
+					dos.writeUTF(CM_ENUM.CHANGE_COLOR + "Red");
 					dos.flush();
 				}catch(IOException io){}
 			}else if(e.getSource() == btn_Color2 && auth == true){
 				try{
-					dos.writeUTF("//Color" + "Green");
+					dos.writeUTF(CM_ENUM.CHANGE_COLOR + "Green");
 					dos.flush();
 				}catch(IOException io){}
 			}else if(e.getSource() == btn_Color3 && auth == true){
 				try{
-					dos.writeUTF("//Color" + "Blue");
+					dos.writeUTF(CM_ENUM.CHANGE_COLOR + "Blue");
 					dos.flush();
 				}catch(IOException io){}
 			}else if(e.getSource() == btn_Color4 && auth == true){
 				try{
-					dos.writeUTF("//Color" + "Yellow");
+					dos.writeUTF(CM_ENUM.CHANGE_COLOR + "Yellow");
 					dos.flush();
 				}catch(IOException io){}
 			}else if(e.getSource() == btn_Color5 && auth == true){
 				try{
-					dos.writeUTF("//Color" + "Black");
+					dos.writeUTF(CM_ENUM.CHANGE_COLOR + "Black");
 					dos.flush();
 				}catch(IOException io){}
 			}else if(e.getSource() == btn_Erase && auth == true){ // '지우기' 버튼
 				try{
-					dos.writeUTF("//Erase");
+					dos.writeUTF(CM_ENUM.ERASE);
 					dos.flush();
 				}catch(IOException io){}
 			}else if(e.getSource() == btn_EraseAll && auth == true){ // '모두 지우기' 버튼
 				try{
 					if(auth == true){
-						dos.writeUTF("//ErAll");
+						dos.writeUTF(CM_ENUM.ERASE_ALL);
 						dos.flush();
 					}
 				}catch(IOException io){}
 			}else if(e.getSource() == btn_GG && auth == true){ // '포기' 버튼
 				try{
 					if(auth == true){
-						dos.writeUTF("//GmGG ");
+						dos.writeUTF(CM_ENUM.GG);
 						dos.flush();
 					}
 				}catch(IOException io){}
@@ -145,7 +145,7 @@ public class CM_Client extends CM_Client_GUI implements ActionListener
 				String chat = textField.getText();
 				textField.setText("");
 				try{
-					dos.writeUTF("//Chat " + nickName + " : " + chat);
+					dos.writeUTF(CM_ENUM.CHAT + nickName + " : " + chat);
 					dos.flush();
 				}catch(IOException io){}
 			}
@@ -157,7 +157,7 @@ public class CM_Client extends CM_Client_GUI implements ActionListener
 		    try{
 		    	if(auth == true){
 		    		int x = e.getX(); int y = e.getY();
-		    		dos.writeUTF("//Mouse" + x + "." + y);
+		    		dos.writeUTF(CM_ENUM.MOUSE_XY + x + "." + y);
 		    		dos.flush();
 		    	}
 		    }catch(IOException io){}
@@ -183,45 +183,45 @@ public class CM_Client extends CM_Client_GUI implements ActionListener
 			while(dis != null){
 				try{
 					String msg = dis.readUTF();
-					if(msg.startsWith("//CList")){ // 명령어 : 클라이언트 목록 갱신
+					if(msg.startsWith(CM_ENUM.UPD_CLIST)){ // 명령어 : 클라이언트 목록 갱신
 						playerName = msg.substring(7, msg.indexOf(" "));
 						playerScore = msg.substring(msg.indexOf(" ") + 1, msg.indexOf("#"));
 						playerIdx = msg.substring(msg.indexOf("#") + 1);
 						updateClientList(); // 클라이언트 목록 갱신
-					}else if(msg.startsWith("//Start")){ // 명령어 : 게임 시작 ( + 타이머)
+					}else if(msg.startsWith(CM_ENUM.START)){ // 명령어 : 게임 시작 ( + 타이머)
 						gameStart = true;
 						g = canvas.getGraphics(); // 캔버스 설정 초기화
 						g.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 						Brush canvas2 = (Brush)canvas;
 						canvas2.color = Color.BLACK;
 						color = Color.BLACK;
-						bgm("//Play"); // BGM 재생
-					}else if(msg.equals("//GmGG ")){ // 명령어 : 출제자 게임 포기
+						bgm(CM_ENUM.BGM_PLAY); // BGM 재생
+					}else if(msg.equals(CM_ENUM.GG)){ // 명령어 : 출제자 게임 포기
 						gameStart = false;
 						auth = false;
 						textField.setEnabled(true);
 						btn_Ready.setEnabled(true);
-						bgm("//Stop"); // BGM 정지
-					}else if(msg.equals("//GmEnd")){ // 명령어 : 게임 종료
+						bgm(CM_ENUM.BGM_STOP); // BGM 정지
+					}else if(msg.equals(CM_ENUM.END)){ // 명령어 : 게임 종료
 						gameStart = false;
 						auth = false;
 						textField.setEnabled(true);
 						btn_Ready.setEnabled(true);
 						label_Timer.setText("00 : 00");
-						bgm("//Stop"); // BGM 정지
-					}else if(msg.startsWith("//RExam")){ // 명령어 : 문제 랜덤 출제
+						bgm(CM_ENUM.BGM_STOP); // BGM 정지
+					}else if(msg.startsWith(CM_ENUM.EXAM)){ // 명령어 : 문제 랜덤 출제
 						if(auth == true){
 							label_Exam_Sub.setText(msg.substring(7));
 						}else{
 							label_Exam_Sub.setText(" ??? ");
 						}
-					}else if(msg.startsWith("//Auth ")){ // 명령어 : 출제자 권한 부여
+					}else if(msg.startsWith(CM_ENUM.AUTH)){ // 명령어 : 출제자 권한 부여
 						if(CM_Login.nickName.equals(msg.substring(7))){
 							auth = true;
 							textArea.append("\n[ 당신이 문제 출제자입니다 !! ]" + "\n\n");
 							textField.setEnabled(false);
 						}
-					}else if(msg.startsWith("//Mouse")){ // 명령어 : 캔버스 공유 (마우스 좌표 수신)
+					}else if(msg.startsWith(CM_ENUM.MOUSE_XY)){ // 명령어 : 캔버스 공유 (마우스 좌표 수신)
 						if(auth == false){
 							int tempX = Integer.parseInt(msg.substring(7, msg.indexOf("."))); 
 							int tempY = Integer.parseInt(msg.substring(msg.indexOf(".") + 1));
@@ -232,9 +232,9 @@ public class CM_Client extends CM_Client_GUI implements ActionListener
 				            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		                    g.drawLine(tempX, tempY, tempX, tempY);
 						}
-					}else if(msg.startsWith("//Timer")){ // 명령어 : 타이머 시간 표시
+					}else if(msg.startsWith(CM_ENUM.TIMER)){ // 명령어 : 타이머 시간 표시
 						label_Timer.setText(msg.substring(7));
-					}else if(msg.startsWith("//Color")){ // 명령어 : 컬러 설정
+					}else if(msg.startsWith(CM_ENUM.CHANGE_COLOR)){ // 명령어 : 컬러 설정
 						String temp = msg.substring(7);
 						switch(temp){
 							case "Red": color = Color.RED; break;
@@ -243,9 +243,9 @@ public class CM_Client extends CM_Client_GUI implements ActionListener
 							case "Yellow": color = Color.YELLOW; break;
 							case "Black": color = Color.BLACK; break;
 						}
-					}else if(msg.equals("//Erase")){ // 명령어 : 지우기
+					}else if(msg.equals(CM_ENUM.ERASE)){ // 명령어 : 지우기
 						color = Color.WHITE;
-					}else if(msg.equals("//ErAll")){ // 명령어 : 모두 지우기
+					}else if(msg.equals(CM_ENUM.ERASE_ALL)){ // 명령어 : 모두 지우기
 						g = canvas.getGraphics();
 						g.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 					}else{ // 일반 채팅 출력
@@ -314,13 +314,13 @@ public class CM_Client extends CM_Client_GUI implements ActionListener
 		
 		void bgm(String play){ // BGM 재생 & 정지
 			try{
-				if(play.equals("//Play")){
+				if(play.equals(CM_ENUM.BGM_PLAY)){
 					new JFXPanel();
 					File f = new File("bgm\\bgm.mp3");
 					Media bgm = new Media(f.toURI().toURL().toString());
 			        p = new MediaPlayer(bgm);
 					p.play();
-				}else if(play.equals("//Stop")){
+				}else if(play.equals(CM_ENUM.BGM_STOP)){
 					p.stop();
 					p.setMute(true);
 					p.dispose();
@@ -334,8 +334,8 @@ public class CM_Client extends CM_Client_GUI implements ActionListener
 	{	
 		int x1, x2, y1, y2;
 		public void mouseDragged(MouseEvent e){
-		    x2 = e.getX(); y2 = e.getY();
-		    ((Brush)canvas).x = x2; ((Brush)canvas).y = y2;
+		    x1 = e.getX(); y1 = e.getY();
+		    ((Brush)canvas).x1 = x1; ((Brush)canvas).y1 = y1;
 		    canvas.repaint();
 		}
 		public void mousePressed(MouseEvent e){}
@@ -369,8 +369,8 @@ public class CM_Client extends CM_Client_GUI implements ActionListener
 	// 내부 클래스 - 캔버스 브러쉬 설정
 	class Brush extends Canvas
 	{
-		int x;
-		int y;
+		int x1, x2;
+		int y1, y2;
 		Color color = Color.BLACK;
 
 		void paintComponent(Graphics g){
@@ -379,7 +379,7 @@ public class CM_Client extends CM_Client_GUI implements ActionListener
 	            g2d.setColor(color);
 	            g2d.setStroke(new BasicStroke(6));
 	            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-	            g2d.drawLine(x, y, x, y);
+	            g2d.drawLine(x1, y1, x1, y1);
 			}
 		}
 		

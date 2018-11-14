@@ -8,7 +8,6 @@ public class CM_Server extends CM_Server_GUI implements ActionListener
 {
 	ServerSocket ss;
 	Socket s;
-	public static final int MAX_CLIENT = 4;
 	int port = 7777;
 	int readyPlayer; // 게임 준비된 클라이언트 카운트
 	int score;
@@ -35,7 +34,7 @@ public class CM_Server extends CM_Server_GUI implements ActionListener
 						btn_ServerClose.setEnabled(true);
 						while(true){
 							s = ss.accept();
-							if((clientList.size() + 1) > MAX_CLIENT || gameStart == true){ // 정원이 초과되었거나, 게임중이라면 소켓 연결 거부
+							if((clientList.size() + 1) > CM_ENUM.MAX_CLIENT || gameStart == true){ // 정원이 초과되었거나, 게임중이라면 소켓 연결 거부
 								s.close();
 							}else{
 								Thread gm = new GameManager(s);
@@ -120,7 +119,7 @@ public class CM_Server extends CM_Server_GUI implements ActionListener
 				clientMgmt(clientName, "퇴장");
 				readyPlayer = 0; // 새로운 클라이언트가 접속해도 게임 시작에 문제가 없도록 변수 초기화
 				gameStart = false;
-				sendSystemMsg("//GmEnd"); // 클라이언트 퇴장시, 즉시 라운드 종료
+				sendSystemMsg(CM_ENUM.END); // 클라이언트 퇴장시, 즉시 라운드 종료
 			}
 		}
 		
@@ -143,7 +142,7 @@ public class CM_Server extends CM_Server_GUI implements ActionListener
 			    index++;
 			}
 			for(int i=0; i<clientList.size(); i++){
-				sendSystemMsg("//CList" + keys[i] + " " + values[i] + "#" + i); // 명령어 : 클라이언트 목록 갱신
+				sendSystemMsg(CM_ENUM.UPD_CLIST + keys[i] + " " + values[i] + "#" + i); // 명령어 : 클라이언트 목록 갱신
 			}
 		}
 		
@@ -157,10 +156,10 @@ public class CM_Server extends CM_Server_GUI implements ActionListener
 		
 		void filtering(String msg) { // 명령어 필터링
 			String temp = msg.substring(0, 7);
-			if(temp.equals("//Chat ")){ // 명령어 : 일반 채팅
+			if(temp.equals(CM_ENUM.CHAT)){ // 명령어 : 일반 채팅
 				answerCheck(msg.substring(7).trim());
 				sendSystemMsg(msg.substring(7));
-			}else if(temp.equals("//Ready")){ // 명령어 : 클라이언트 준비 상태 체크
+			}else if(temp.equals(CM_ENUM.READY)){ // 명령어 : 클라이언트 준비 상태 체크
 				 readyPlayer++;
 				 if(readyPlayer >= 2 && readyPlayer == clientList.size()){ // 2명 이상 && 모든 클라이언트가 준비되었을 경우
 					 for(int i=3; i>0; i--){
@@ -173,26 +172,26 @@ public class CM_Server extends CM_Server_GUI implements ActionListener
 					 Iterator<String> it = clientList.keySet().iterator();
 					 while(it.hasNext()) authList.add(it.next());
 					 Random rd = new Random();
-					 sendSystemMsg("//Auth " + authList.get(rd.nextInt(authList.size()))); // 명령어 : 문제 출제자 랜덤 선택
+					 sendSystemMsg(CM_ENUM.AUTH + authList.get(rd.nextInt(authList.size()))); // 명령어 : 문제 출제자 랜덤 선택
 					 Exam ex = new Exam(); ex.start(); // 문제 출제
 					 StopWatch tm = new StopWatch(); tm.start(); // 타이머 시작
 					 gameStart = true;
-					 sendSystemMsg("//Start"); // 명령어 : 게임 시작
+					 sendSystemMsg(CM_ENUM.START); // 명령어 : 게임 시작
 				 }
-			}else if(temp.equals("//Mouse")){ // 명령어 : 마우스 좌표 수신
+			}else if(temp.equals(CM_ENUM.MOUSE_XY)){ // 명령어 : 마우스 좌표 수신
 				sendSystemMsg(msg);
-			}else if(temp.equals("//Color")){ // 명령어 : 컬러 설정
+			}else if(temp.equals(CM_ENUM.CHANGE_COLOR)){ // 명령어 : 컬러 설정
 				sendSystemMsg(msg);
-			}else if(temp.equals("//Erase")){ // 명령어 : 지우기
+			}else if(temp.equals(CM_ENUM.ERASE)){ // 명령어 : 지우기
 				sendSystemMsg(msg);
-			}else if(temp.equals("//ErAll")){ // 명령어 : 모두 지우기
+			}else if(temp.equals(CM_ENUM.ERASE_ALL)){ // 명령어 : 모두 지우기
 				sendSystemMsg(msg);
-			}else if(temp.equals("//GmGG ")){ // 명령어 : 게임 종료 (출제자가 게임을 포기했을 경우)
+			}else if(temp.equals(CM_ENUM.GG)){ // 명령어 : 게임 종료 (출제자가 게임을 포기했을 경우)
 				sendSystemMsg("[ 출제자가 게임을 포기했습니다 !! ]");
 				sendSystemMsg(msg);
 				readyPlayer = 0;
 				gameStart = false;
-			}else if(temp.equals("//GmEnd")){ // 명령어 : 게임 종료 (시간 초과나 이탈자 발생으로 게임이 종료되는 경우)
+			}else if(temp.equals(CM_ENUM.END)){ // 명령어 : 게임 종료 (시간 초과나 이탈자 발생으로 게임이 종료되는 경우)
 				sendSystemMsg("[ 게임이 종료되었습니다 !! ]");
 				sendSystemMsg(msg);
 				readyPlayer = 0;
@@ -204,7 +203,7 @@ public class CM_Server extends CM_Server_GUI implements ActionListener
 			String tempNick = msg.substring(0, msg.indexOf(" ")); // 정답자 닉네임 체크
 			String tempAns = msg.substring(msg.lastIndexOf(" ") + 1); // 정답 내용 체크
 			if(tempAns.equals(line) && gameStart == true){ // 정답자 중복 방지를 위한 게임 시작 상태 체크
-				sendSystemMsg("//GmEnd");
+				sendSystemMsg(CM_ENUM.END);
 				gameStart = false;
 				readyPlayer = 0; // 새로운 게임을 시작하기 위한 변수 초기화
 				sendSystemMsg("[ " + tempNick + "님 정답 !! ]");
@@ -227,7 +226,7 @@ public class CM_Server extends CM_Server_GUI implements ActionListener
 				FileReader fr = new FileReader("wordlist.txt");
 				br = new BufferedReader(fr);
 				for(i=0;i<=n;i++) line = br.readLine();
-				sendSystemMsg("//RExam" + line);
+				sendSystemMsg(CM_ENUM.EXAM + line);
 			}catch(IOException ie){}
 		}
 	}
@@ -242,9 +241,9 @@ public class CM_Server extends CM_Server_GUI implements ActionListener
 				while(gameStart == true){
 					sleep(10);
 					long time = System.currentTimeMillis() - preTime;
-					sendSystemMsg("//Timer" + (toTime(time)));
+					sendSystemMsg(CM_ENUM.TIMER + (toTime(time)));
 					if(toTime(time).equals("00 : 00")){
-						sendSystemMsg("//GmEnd"); // 시간 초과시, 게임 종료
+						sendSystemMsg(CM_ENUM.END); // 시간 초과시, 게임 종료
 						readyPlayer = 0;
 						gameStart = false;
 						break;
