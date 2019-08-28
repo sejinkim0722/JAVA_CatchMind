@@ -1,18 +1,18 @@
-package ksj.catchmind;
+package ksj.catchmind.server;
 
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.*;
 
-public class CM_Server_GUI extends JFrame
-{
+public class ServerGUI extends JFrame {
+	
 	JPanel contentPane, panel_Main, panel_TextArea, panel_Btn;
 	JScrollPane scrollPane;
 	JTextArea textArea;
 	JLabel label_ServerStatus;
 	JButton btn_ServerStart, btn_ServerClose;
 	
-	public CM_Server_GUI(){
+	public ServerGUI() {
 		setTitle("JAVA CatchMind Server");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -33,7 +33,7 @@ public class CM_Server_GUI extends JFrame
 		panel_Main.add(label_ServerStatus);
 		label_ServerStatus.setHorizontalTextPosition(SwingConstants.CENTER);
 		label_ServerStatus.setHorizontalAlignment(SwingConstants.CENTER);
-		label_ServerStatus.setFont(new Font("³ª´®¹Ù¸¥°íµñ", Font.PLAIN, 20));
+		label_ServerStatus.setFont(new Font("NanumBarunGothic", Font.PLAIN, 20));
 		
 		panel_TextArea = new JPanel();
 		panel_Main.add(panel_TextArea);
@@ -54,22 +54,22 @@ public class CM_Server_GUI extends JFrame
 		panel_Main.add(panel_Btn);
 		panel_Btn.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
-		btn_ServerStart = new JButton(" ¼­¹ö ½ÃÀÛ ");
+		btn_ServerStart = new JButton(" ì„œë²„ ì‹œìž‘ ");
 		btn_ServerStart.setHorizontalTextPosition(SwingConstants.CENTER);
 		btn_ServerStart.setPreferredSize(new Dimension(120, 40));
 		btn_ServerStart.setFocusPainted(false);
-		btn_ServerStart.setFont(new Font("³ª´®¹Ù¸¥°íµñ", Font.BOLD, 16));
+		btn_ServerStart.setFont(new Font("NanumBarunGothic", Font.BOLD, 16));
 		btn_ServerStart.setAlignmentX(Component.CENTER_ALIGNMENT);
 		btn_ServerStart.setForeground(Color.WHITE);
 		btn_ServerStart.setBackground(Color.DARK_GRAY);
 		btn_ServerStart.setBorder(null);
 		panel_Btn.add(btn_ServerStart);
 		
-		btn_ServerClose = new JButton(" ¼­¹ö Á¾·á ");
+		btn_ServerClose = new JButton(" ì„œë²„ ì¢…ë£Œ ");
 		btn_ServerClose.setHorizontalTextPosition(SwingConstants.CENTER);
 		btn_ServerClose.setPreferredSize(new Dimension(120, 40));
 		btn_ServerClose.setFocusPainted(false);
-		btn_ServerClose.setFont(new Font("³ª´®¹Ù¸¥°íµñ", Font.BOLD, 16));
+		btn_ServerClose.setFont(new Font("NanumBarunGothic", Font.BOLD, 16));
 		btn_ServerClose.setAlignmentX(Component.CENTER_ALIGNMENT);
 		btn_ServerClose.setForeground(Color.WHITE);
 		btn_ServerClose.setBackground(Color.DARK_GRAY);
@@ -77,4 +77,5 @@ public class CM_Server_GUI extends JFrame
 		panel_Btn.add(btn_ServerClose);
 		btn_ServerClose.setEnabled(false);
 	}
+	
 }

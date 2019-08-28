@@ -1,7 +1,7 @@
 package ksj.catchmind;
 
-public class CM_ENUM
-{
+public class Protocol {
+	
 	public static final int MAX_CLIENT = 4;
 	public static final String CHAT = "//00001";
 	public static final String READY = "//00002";
@@ -18,4 +18,5 @@ public class CM_ENUM
 	public static final String BGM_PLAY = "//00013";
 	public static final String BGM_STOP = "//00014";
 	public static final String UPD_CLIST = "//00015";
+	
 }

@@ -1,11 +1,11 @@
-package ksj.catchmind;
+package ksj.catchmind.client;
 
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.*;
 
-public class CM_Client_GUI extends JFrame
-{
+public class ClientGUI extends JFrame {
+	
 	JPanel contentPane, panel_Main, panel_Chat, panel_Exam, panel_Canvas, panel_Option;
 	JButton btn_Ready, btn_Exit, btn_Color1, btn_Color2, btn_Color3, btn_Color4, btn_Color5, btn_Erase, btn_EraseAll, btn_GG;
 	JLabel label_Canvas, label_Exam, label_Exam_Sub, label_Timer, label_Client1, label_Client2, label_Client3, label_Client4;
@@ -14,9 +14,9 @@ public class CM_Client_GUI extends JFrame
 	JTextArea textArea;
 	JScrollPane scrollPane;
 	
-	public CM_Client_GUI(){
-		// ±âº» GUI ¼³Á¤
-		setFont(new Font("³ª´®¹Ù¸¥°íµñ", Font.PLAIN, 13));
+	public ClientGUI(){
+		// ê¸°ë³¸ GUI ì„¤ì •
+		setFont(new Font("NanumBarunGothic", Font.PLAIN, 13));
 		setVisible(true);
 		setResizable(false);
 		setTitle("JAVA CatchMind Client");
@@ -24,19 +24,19 @@ public class CM_Client_GUI extends JFrame
 		setBounds(100, 100, 1280, 720);
 		setLocationRelativeTo(null);
 		
-		// º£ÀÌ½º ÆĞ³Î
+		// ë² ì´ìŠ¤ íŒ¨ë„
 		contentPane = new JPanel();
 		contentPane.setBorder(null);
 		setContentPane(contentPane);
 		contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.X_AXIS));
 		
 		panel_Main = new JPanel();
-		panel_Main.setFont(new Font("³ª´®¹Ù¸¥°íµñ", Font.PLAIN, 13));
+		panel_Main.setFont(new Font("NanumBarunGothic", Font.PLAIN, 13));
 		panel_Main.setBackground(new Color(228, 242, 254));
 		contentPane.add(panel_Main);
 		panel_Main.setLayout(null);
 		
-		// Âü¿©ÀÚ ¸ñ·Ï ¿µ¿ª
+		// í´ë¼ì´ì–¸íŠ¸ ëª©ë¡ íŒ¨ë„
 		JPanel panel_ClientList = new JPanel();
 		JLabel label_ClientList = new JLabel(new ImageIcon("image\\user.png"));
 		panel_ClientList.setOpaque(false);
@@ -53,8 +53,8 @@ public class CM_Client_GUI extends JFrame
 		label_Client1.setBounds(18, 15, 120, 80);
 		panel_ClientList.add(label_Client1);
 		
-		label_Client1_Sub = new Label("[ ´Ğ³×ÀÓ & Á¡¼ö ]");
-		label_Client1_Sub.setFont(new Font("³ª´®¹Ù¸¥°íµñ", Font.BOLD, 13));
+		label_Client1_Sub = new Label("[ ë‹‰ë„¤ì„ / ì ìˆ˜ ]");
+		label_Client1_Sub.setFont(new Font("NanumBarunGothic", Font.BOLD, 13));
 		label_Client1_Sub.setAlignment(Label.CENTER);
 		label_Client1_Sub.setBackground(Color.WHITE);
 		label_Client1_Sub.setBounds(18, 95, 120, 30);
@@ -65,8 +65,8 @@ public class CM_Client_GUI extends JFrame
 		label_Client2.setBounds(18, 135, 120, 80);
 		panel_ClientList.add(label_Client2);
 		
-		label_Client2_Sub = new Label("[ ´Ğ³×ÀÓ & Á¡¼ö ]");
-		label_Client2_Sub.setFont(new Font("³ª´®¹Ù¸¥°íµñ", Font.BOLD, 13));
+		label_Client2_Sub = new Label("[ ë‹‰ë„¤ì„ / ì ìˆ˜ ]");
+		label_Client2_Sub.setFont(new Font("NanumBarunGothic", Font.BOLD, 13));
 		label_Client2_Sub.setAlignment(Label.CENTER);
 		label_Client2_Sub.setBackground(Color.WHITE);
 		label_Client2_Sub.setBounds(18, 215, 120, 30);
@@ -77,8 +77,8 @@ public class CM_Client_GUI extends JFrame
 		label_Client3.setBounds(18, 255, 120, 80);
 		panel_ClientList.add(label_Client3);
 		
-		label_Client3_Sub = new Label("[ ´Ğ³×ÀÓ & Á¡¼ö ]");
-		label_Client3_Sub.setFont(new Font("³ª´®¹Ù¸¥°íµñ", Font.BOLD, 13));
+		label_Client3_Sub = new Label("[ ë‹‰ë„¤ì„ / ì ìˆ˜ ]");
+		label_Client3_Sub.setFont(new Font("NanumBarunGothic", Font.BOLD, 13));
 		label_Client3_Sub.setAlignment(Label.CENTER);
 		label_Client3_Sub.setBackground(Color.WHITE);
 		label_Client3_Sub.setBounds(18, 335, 120, 30);
@@ -89,14 +89,14 @@ public class CM_Client_GUI extends JFrame
 		label_Client4.setBounds(18, 375, 120, 80);
 		panel_ClientList.add(label_Client4);
 		
-		label_Client4_Sub = new Label("[ ´Ğ³×ÀÓ & Á¡¼ö ]");
-		label_Client4_Sub.setFont(new Font("³ª´®¹Ù¸¥°íµñ", Font.BOLD, 13));
+		label_Client4_Sub = new Label("[ ë‹‰ë„¤ì„ / ì ìˆ˜ ]");
+		label_Client4_Sub.setFont(new Font("NanumBarunGothic", Font.BOLD, 13));
 		label_Client4_Sub.setAlignment(Label.CENTER);
 		label_Client4_Sub.setBackground(Color.WHITE);
 		label_Client4_Sub.setBounds(18, 455, 120, 30);
 		panel_ClientList.add(label_Client4_Sub);
 		
-		// ¹®Á¦ ÃâÁ¦ ¿µ¿ª
+		// ë¬¸ì œ ì¶œì œ íŒ¨ë„
 		panel_Exam = new JPanel();
 		panel_Exam.setBounds(10, 10, 1245, 85);
 		panel_Main.add(panel_Exam);
@@ -116,12 +116,12 @@ public class CM_Client_GUI extends JFrame
 		label_Exam_Sub = new JLabel();
 		label_Exam_Sub.setOpaque(false);
 		label_Exam_Sub.setBounds(45, 0, 803, 65);
-		label_Exam_Sub.setFont(new Font("³ª´®¹Ù¸¥°íµñ", Font.PLAIN, 24));
+		label_Exam_Sub.setFont(new Font("NanumBarunGothic", Font.PLAIN, 24));
 		label_Exam_Sub.setForeground(Color.BLACK);
 		label_Exam_Sub.setHorizontalAlignment(SwingConstants.CENTER);
 		label_Exam.add(label_Exam_Sub);
 		
-		// ¿ì»ó´Ü ¹öÆ° ¿µ¿ª
+		// ìš°ìƒë‹¨(ì¤€ë¹„ / ë‹«ê¸°) ë²„íŠ¼
 		btn_Ready = new JButton(new ImageIcon("image\\ready.png"));
 		btn_Ready.setFocusPainted(false);
 		btn_Ready.setBorderPainted(false);
@@ -138,21 +138,21 @@ public class CM_Client_GUI extends JFrame
 		label_Exam_Back.add(btn_Exit);
 		
 		
-		// ·Î°í ¿µ¿ª
+		// ë¡œê³  ë¼ë²¨
 		JLabel label_Logo = new JLabel(new ImageIcon("image\\logo.png"));
 		label_Logo.setOpaque(false);
 		label_Logo.setBorder(null);
 		label_Logo.setBounds(12, 10, 142, 65);
 		label_Exam_Back.add(label_Logo);
 		
-		// Ã¤ÆÃ ¿µ¿ª
+		// ì±„íŒ… íŒ¨ë„
 		panel_Chat = new JPanel();
 		panel_Chat.setBounds(992, 105, 263, 567);
 		panel_Main.add(panel_Chat);
 		panel_Chat.setLayout(null);
 		
 		scrollPane = new JScrollPane(textArea);
-		scrollPane.setFont(new Font("³ª´®¹Ù¸¥°íµñ", Font.PLAIN, 13));
+		scrollPane.setFont(new Font("NanumBarunGothic", Font.PLAIN, 13));
 		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane.setBounds(0, 0, 263, 535);
@@ -160,7 +160,7 @@ public class CM_Client_GUI extends JFrame
 		
 		textArea = new JTextArea();
 		textArea.setBorder(new LineBorder(new Color(127, 219, 254), 4, true));
-		textArea.setFont(new Font("³ª´®¹Ù¸¥°íµñ", Font.PLAIN, 13));
+		textArea.setFont(new Font("NanumBarunGothic", Font.PLAIN, 13));
 		textArea.setEditable(false);
 		textArea.setLineWrap(true);
 		scrollPane.setViewportView(textArea);
@@ -173,7 +173,7 @@ public class CM_Client_GUI extends JFrame
 		panel_Chat.add(textField);
 		textField.setColumns(10);
 		
-		// Äµ¹ö½º ¿µ¿ª
+		// ìº”ë²„ìŠ¤ íŒ¨ë„
 		JLabel labell_Canvas_Top = new JLabel(new ImageIcon("image\\canvas.png"));
 		labell_Canvas_Top.setBounds(176, 105, 802, 34);
 		labell_Canvas_Top.setOpaque(true);
@@ -256,17 +256,18 @@ public class CM_Client_GUI extends JFrame
 		btn_GG.setBounds(855, 10, 100, 37);
 		panel_Option.add(btn_GG);
 		
-		// Å¸ÀÌ¸Ó ¿µ¿ª
+		// íƒ€ì´ë¨¸ ë¼ë²¨
 		JLabel label_Timer_Back = new JLabel(new ImageIcon("image\\time.png"));
 		label_Timer_Back.setOpaque(true);
 		label_Timer = new JLabel("00 : 00");
 		label_Timer.setHorizontalTextPosition(SwingConstants.CENTER);
 		label_Timer.setHorizontalAlignment(SwingConstants.CENTER);
-		label_Timer.setFont(new Font("³ª´®¹Ù¸¥°íµñ", Font.PLAIN, 24));
+		label_Timer.setFont(new Font("NanumBarunGothic", Font.PLAIN, 24));
 		label_Timer.setForeground(Color.BLACK);
 		label_Timer_Back.setBounds(0, 0, 158, 57);
 		label_Timer.setBounds(0, 10, 158, 57);
 		panel_Option.add(label_Timer_Back);
 		label_Timer_Back.add(label_Timer);
 	}
+	
 }

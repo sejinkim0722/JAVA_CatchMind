@@ -1,17 +1,17 @@
-package ksj.catchmind;
+package ksj.catchmind.login;
 
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.*;
 
-public class CM_Login_GUI extends JFrame
-{
+public class LoginGUI extends JFrame {
+	
 	JPanel panel_TOP, panel_CENTER, panel_BOTTOM;
 	JLabel label_nickName, label_Ip;
 	JTextField tf_nickName, tf_Ip;
 	JButton btn_Connect, btn_Exit;
 	
-	public CM_Login_GUI(){
+	public LoginGUI() {
 		panel_TOP = new JPanel();
 		panel_CENTER = new JPanel();
 		panel_BOTTOM = new JPanel();
@@ -20,8 +20,8 @@ public class CM_Login_GUI extends JFrame
 		label_Ip = new JLabel(new ImageIcon("image\\ip.png"));
 		tf_nickName = new JTextField(15);
 		tf_Ip = new JTextField(15);
-		btn_Connect = new JButton("¡¢º”");
-		btn_Exit = new JButton("¡æ∑·");
+		btn_Connect = new JButton("Ï†ëÏÜç");
+		btn_Exit = new JButton("Ï¢ÖÎ£å");
 
 		panel_TOP.setBackground(new Color(50, 50, 50));
 		panel_CENTER.setBackground(new Color(50, 50, 50));
@@ -59,12 +59,12 @@ public class CM_Login_GUI extends JFrame
 		panel_BOTTOM.add(btn_Connect);
 		panel_BOTTOM.add(btn_Exit);
 
-		// ±‚∫ª GUI º≥¡§
 		setVisible(true);
 		setTitle("JAVA CatchMind LOGIN");
 		setSize(300, 150);
 		setResizable(false);
 		setLocationRelativeTo(null);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
+	
 }
