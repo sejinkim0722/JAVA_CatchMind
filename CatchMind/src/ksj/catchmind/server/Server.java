@@ -15,7 +15,8 @@ public class Server extends ServerGUI implements ActionListener {
 	Socket s;
 	static int port = 7777;
 	static int readyPlayer; // 게임 준비된 클라이언트의 수
-	final static int GAMESTART_COUNT = 3; // 게임 시작 카운트
+	static final int MAX_CLIENT = 4; // 최대 접속 클라이언트의 수 
+	static final int GAMESTART_COUNTDOWN = 3; // 게임 시작 카운트
 	String line; // 메시지 
 	int score; // 게임 점수
 	boolean isGameStarted; // 게임 시작 상태
@@ -42,7 +43,7 @@ public class Server extends ServerGUI implements ActionListener {
 						
 						while(true) {
 							s = ss.accept();
-							if((clientList.size() + 1) > Protocol.MAX_CLIENT || isGameStarted == true) { // 정원이 초과되었거나, 게임중이라면 소켓 연결 거부
+							if((clientList.size() + 1) > MAX_CLIENT || isGameStarted == true) { // 정원이 초과되었거나, 게임중이라면 소켓 연결 거부
 								s.close();
 							} else {
 								Thread gm = new GameManager(s);
@@ -50,12 +51,14 @@ public class Server extends ServerGUI implements ActionListener {
 							}
 						}
 					} catch(IOException io) {
+						io.printStackTrace();
 						System.exit(0);
 					}
 				}
 			}.start();
 		} else if(e.getSource() == btn_ServerClose) {
 			int select = JOptionPane.showConfirmDialog(null, "서버를 정말 종료하시겠습니까?", "JAVA CatchMind Server", JOptionPane.OK_CANCEL_OPTION);
+			
 			try {
 				if(select == JOptionPane.YES_OPTION) {
 					ss.close();
@@ -72,6 +75,7 @@ public class Server extends ServerGUI implements ActionListener {
 	
 	public void sendSystemMsg(String msg) { // 시스템 메시지 및 프로토콜 송신
 		Iterator<String> it = clientList.keySet().iterator();
+		
 		while(it.hasNext()) {
 			try {
 				DataOutputStream dos = clientList.get(it.next());
@@ -102,6 +106,7 @@ public class Server extends ServerGUI implements ActionListener {
 		
 		public void run() {
 			String clientName = "";
+			
 			try {
 				clientName = dis.readUTF();
 				if(!clientList.containsKey(clientName)) { // 중복 닉네임 방지
@@ -155,7 +160,7 @@ public class Server extends ServerGUI implements ActionListener {
 			    values[index] = mapEntry.getValue();
 			    index++;
 			}
-			for(int i=0; i<clientList.size(); i++) sendSystemMsg(Protocol.UPD_CLIST + keys[i] + " " + values[i] + "#" + i); // 프로토콜 : 클라이언트 목록 갱신
+			for(int i = 0; i < clientList.size(); i++) sendSystemMsg(Protocol.UPD_CLIST + keys[i] + " " + values[i] + "#" + i); // 프로토콜 : 클라이언트 목록 갱신
 		}
 		
 		void closeAll() {
@@ -177,7 +182,7 @@ public class Server extends ServerGUI implements ActionListener {
 			} else if(temp.equals(Protocol.READY)) { // 프로토콜 : 클라이언트 준비 상태 체크
 				readyPlayer++;
 				if(readyPlayer >= 2 && readyPlayer == clientList.size()) { // 2명 이상의 클라이언트가 준비되었을 경우 게임 시작
-					for(int count=GAMESTART_COUNT; count>0; count--) {
+					for(int count = GAMESTART_COUNTDOWN; count > 0; count--) {
 						try {
 							sendSystemMsg("[ 모든 참여자들이 준비되었습니다. ]\n[ " + count + " 초 후 게임을 시작합니다.. ]");
 							TimeUnit.MILLISECONDS.sleep(1000);

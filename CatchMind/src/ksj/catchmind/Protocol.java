@@ -2,7 +2,6 @@ package ksj.catchmind;
 
 public class Protocol {
 	
-	public static final int MAX_CLIENT = 4;
 	public static final String CHAT = "//00001";
 	public static final String READY = "//00002";
 	public static final String START = "//00003";

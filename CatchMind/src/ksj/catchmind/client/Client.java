@@ -120,7 +120,8 @@ public class Client extends ClientGUI implements ActionListener {
 			}
 		}
 		
-		public void keyReleased(KeyEvent e) { // 채팅 입력(Enter Key)
+		// 채팅 입력(Enter Key)
+		public void keyReleased(KeyEvent e) {
 			if(e.getKeyCode() == KeyEvent.VK_ENTER) {
 				String chat = textField.getText();
 				textField.setText("");
@@ -135,19 +136,22 @@ public class Client extends ClientGUI implements ActionListener {
 		public void keyTyped(KeyEvent e) {}
 		public void keyPressed(KeyEvent e) {}
 		
-		public void mouseDragged(MouseEvent e){ // 마우스 좌표 송신
-		    try{
-		    	if(gameAuth == true){
-		    		int x = e.getX(); int y = e.getY();
+		// 마우스 좌표 송신
+		public void mouseDragged(MouseEvent e) {
+		    try {
+		    	if(gameAuth == true) {
+		    		int x = e.getX(); 
+		    		int y = e.getY();
 		    		dos.writeUTF(Protocol.MOUSE_XY + x + "." + y);
 		    		dos.flush();
 		    	}
-		    }catch(IOException io){
+		    }catch(IOException io) {
 		    	io.printStackTrace();
 		    }
 		}
 		public void mousePressed(MouseEvent e) {}
 		public void mouseMoved(MouseEvent e) {}
+		
 	}
 
 	// 수신 처리
@@ -165,6 +169,7 @@ public class Client extends ClientGUI implements ActionListener {
 			while(dis != null) {
 				try {
 					String msg = dis.readUTF();
+					
 					if(msg.startsWith(Protocol.UPD_CLIST)) { // 프로토콜 : 클라이언트 목록 갱신
 						playerName = msg.substring(7, msg.indexOf(" "));
 						playerScore = msg.substring(msg.indexOf(" ") + 1, msg.indexOf("#"));
@@ -174,8 +179,8 @@ public class Client extends ClientGUI implements ActionListener {
 						gameStart = true;
 						g = canvas.getGraphics(); // 캔버스 설정 초기화
 						g.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-						Brush canvas2 = (Brush)canvas;
-						canvas2.color = Color.BLACK;
+						Brush brush = (Brush)canvas;
+						brush.color = Color.BLACK;
 						color = Color.BLACK;
 						bgm(Protocol.BGM_PLAY); // BGM 재생
 					} else if(msg.equals(Protocol.GG)) { // 프로토콜 : 출제자 게임 포기
@@ -205,7 +210,7 @@ public class Client extends ClientGUI implements ActionListener {
 						}
 					} else if(msg.startsWith(Protocol.MOUSE_XY)){ // 프로토콜 : 캔버스 공유 (마우스 좌표 수신)
 						if(gameAuth == false) {
-							int tempX = Integer.parseInt(msg.substring(7, msg.indexOf("."))); 
+							int tempX = Integer.parseInt(msg.substring(7, msg.indexOf(".")));
 							int tempY = Integer.parseInt(msg.substring(msg.indexOf(".") + 1));
 							g = canvas.getGraphics();
 							g2d = (Graphics2D)g;
@@ -217,13 +222,23 @@ public class Client extends ClientGUI implements ActionListener {
 					} else if(msg.startsWith(Protocol.TIMER)) { // 프로토콜 : 타이머 시간 표시
 						label_Timer.setText(msg.substring(7));
 					} else if(msg.startsWith(Protocol.CHANGE_COLOR)) { // 프로토콜 : 컬러 설정
-						String temp = msg.substring(7);
-						switch(temp) {
-							case "Red": color = Color.RED; break;
-							case "Green": color = Color.GREEN; break;
-							case "Blue": color = Color.BLUE; break;
-							case "Yellow": color = Color.YELLOW; break;
-							case "Black": color = Color.BLACK; break;
+						String tempMsg = msg.substring(7);
+						switch(tempMsg) {
+							case "Red": 
+								color = Color.RED; 
+								break;
+							case "Green": 
+								color = Color.GREEN; 
+								break;
+							case "Blue": 
+								color = Color.BLUE; 
+								break;
+							case "Yellow": 
+								color = Color.YELLOW; 
+								break;
+							case "Black": 
+								color = Color.BLACK; 
+								break;
 						}
 					} else if(msg.equals(Protocol.ERASE)) { // 프로토콜 : 지우기
 						color = Color.WHITE;
@@ -319,8 +334,8 @@ public class Client extends ClientGUI implements ActionListener {
 					p.setMute(true);
 					p.dispose();
 				}
-			} catch(Exception e) {
-				e.printStackTrace();
+			} catch(IOException io) {
+				io.printStackTrace();
 			}
 		}
 	}
@@ -331,39 +346,40 @@ public class Client extends ClientGUI implements ActionListener {
 		int x1, x2, y1, y2;
 		
 		public void mouseDragged(MouseEvent e) {
-		    x1 = e.getX(); 
-		    y1 = e.getY();
-		    ((Brush)canvas).x1 = x1; 
-		    ((Brush)canvas).y1 = y1;
+			x1 = e.getX(); 
+			y1 = e.getY();
+			((Brush)canvas).x1 = x1; 
+			((Brush)canvas).y1 = y1;
 		    
-		    canvas.repaint();
+			canvas.repaint();
 		}
 		public void mousePressed(MouseEvent e) {}
 		public void mouseMoved(MouseEvent e) {}
 		
 		public void actionPerformed(ActionEvent e) {
 			Object obj = e.getSource();
-			Brush canvas2 = (Brush)canvas;
-		   
+			Brush brush = (Brush)canvas;
+
 			if(gameAuth == true) { // 출제자 권한을 가진 상태여야만 캔버스 조작 가능
-			    if(obj == btn_Color1) {
-				    canvas2.color = Color.RED;
-			    } else if(obj == btn_Color2) {
-			    	canvas2.color = Color.GREEN;
-			    } else if(obj == btn_Color3) {
-			    	canvas2.color = Color.BLUE;
-			    } else if(obj == btn_Color4) {
-			    	canvas2.color = Color.YELLOW;
-			    } else if(obj == btn_Color5) {
-			    	canvas2.color = Color.BLACK;
-			    } else if(obj == btn_Erase) {
-			    	canvas2.color = canvas.getBackground();
-			    } else if(obj == btn_EraseAll) {
-			    	Graphics g = canvas2.getGraphics();
-				    g.clearRect(0, 0, canvas.getWidth(), canvas.getHeight()); 
+				if(obj == btn_Color1) {
+					brush.color = Color.RED;
+				} else if(obj == btn_Color2) {
+					brush.color = Color.GREEN;
+				} else if(obj == btn_Color3) {
+					brush.color = Color.BLUE;
+				} else if(obj == btn_Color4) {
+					brush.color = Color.YELLOW;
+				} else if(obj == btn_Color5) {
+					brush.color = Color.BLACK;
+				} else if(obj == btn_Erase) {
+					brush.color = canvas.getBackground();
+				} else if(obj == btn_EraseAll) {
+					Graphics g = brush.getGraphics();
+					g.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 			    }
 			}
 		}
+		
 	}
 	
 	// 캔버스 브러쉬 설정
@@ -375,15 +391,16 @@ public class Client extends ClientGUI implements ActionListener {
 		void paintComponent(Graphics g) {
 			if(gameStart == true && gameAuth == true) { // 게임이 시작되었고, 출제자 권한을 가진 상태여야 그리기 가능
 				Graphics2D g2d = (Graphics2D)g;
-	            g2d.setColor(color);
-	            g2d.setStroke(new BasicStroke(6));
-	            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-	            g2d.drawLine(x1, y1, x1, y1);
+				g2d.setColor(color);
+				g2d.setStroke(new BasicStroke(6));
+				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+				g2d.drawLine(x1, y1, x1, y1);
 			}
 		}
 		
 		public void update(Graphics g) {
 			paintComponent(g);
 		}
+		
 	}
 }

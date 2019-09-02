@@ -25,9 +25,9 @@ public class Login extends LoginGUI implements ActionListener {
 				tf_nickName.setText("");
 			} else {
 				nickName = tf_nickName.getText().trim();
-				String temp = tf_Ip.getText();
-				if(temp.matches("(^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$)")) {
-					ip = temp;
+				
+				if(tf_Ip.getText().matches("(^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$)")) {
+					ip = tf_Ip.getText();
 					JOptionPane.showMessageDialog(null, "             로그인 성공!", "JAVA CatchMind LOGIN", JOptionPane.INFORMATION_MESSAGE);
 					btn_Connect.setEnabled(false);
 					tf_nickName.setEnabled(false);
